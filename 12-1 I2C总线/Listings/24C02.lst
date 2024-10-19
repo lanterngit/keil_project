@@ -1,0 +1,63 @@
+C51 COMPILER V9.54   24C02                                                                 10/20/2024 00:21:47 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE 24C02
+OBJECT MODULE PLACED IN .\Objects\24C02.obj
+COMPILER INVOKED BY: D:\Keil\Keil_v5\C51\BIN\C51.EXE 24C02.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\24C02.lst) TABS(2) OBJECT(.\Objects\24C02.obj)
+
+line level    source
+
+   1          #include "i2c.h"
+   2          #include <regx52.h>
+   3          #include "lcd1602.h"
+   4          #include "delay.h"
+   5          
+   6          #define AT24c02_address   0xA0
+   7          
+   8          void writeByte(wordAddress,byte){
+   9   1        start();
+  10   1        sendByte(AT24c02_address);
+  11   1        recAck();
+  12   1        sendByte(wordAddress);
+  13   1        recAck();
+  14   1        sendByte(byte);
+  15   1        recAck();
+  16   1        end();
+  17   1        LCD_ShowString(2,1,"WRITE OK!");
+  18   1        delay(1000);
+  19   1        LCD_ShowString(2,1,"         ");
+  20   1      }
+  21          
+  22          unsigned char readByte(wordAddress){
+  23   1        unsigned char byte;
+  24   1        start();
+  25   1        sendByte(AT24c02_address);
+  26   1        recAck();
+  27   1        sendByte(wordAddress);
+  28   1        recAck();
+  29   1        start();
+  30   1        sendByte(AT24c02_address|0x01);
+  31   1        recAck();
+  32   1        byte = recByte();
+  33   1        sendAck(1);
+  34   1        end();
+  35   1        LCD_ShowString(2,1,"READ OK!");
+  36   1        delay(1000);
+  37   1        LCD_ShowString(2,1,"         ");
+  38   1        return byte;
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    168    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

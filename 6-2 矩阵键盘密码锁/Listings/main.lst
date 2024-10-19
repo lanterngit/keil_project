@@ -1,0 +1,61 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/19/2024 15:29:59 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          #include "lcd1602.h"
+   3          #include "delay.h"
+   4          #include "matrixkey.h"
+   5          
+   6          void main()
+   7          {
+   8   1        int i = 1;
+   9   1        int res = 0;
+  10   1        LCD_Init();
+  11   1        LCD_ShowString(1,1,"PASSWORD:");
+  12   1        while(1)
+  13   1        {
+  14   2          int num = matrixKey();
+  15   2          
+  16   2          if(num <= 10 && num>0){ //密码区为1-10
+  17   3            LCD_ShowNum(2,10,num%10,1);
+  18   3            res = res*10 + num%10;
+  19   3            LCD_ShowNum(2,1,res,i);
+  20   3            i++;
+  21   3          }
+  22   2          if(num == 11 && res == 7890){
+  23   3            LCD_ShowString(1,14,"OK");
+  24   3            res = 0;
+  25   3            i = 1;
+  26   3          }
+  27   2          else if(num == 11 && res != 7890){
+  28   3            LCD_ShowString(1,14,"ERR");
+  29   3            res = 0;
+  30   3            i = 1;
+  31   3          }
+  32   2          if(num == 12){
+  33   3            res = 0;
+  34   3            i = 1;
+  35   3          }
+  36   2        }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    230    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

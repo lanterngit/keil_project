@@ -1,0 +1,113 @@
+C51 COMPILER V9.54   DS1302                                                                10/16/2024 11:18:17 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\Objects\ds1302.obj
+COMPILER INVOKED BY: D:\Keil\Keil_v5\C51\BIN\C51.EXE ds1302.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\ds1302.lst) TABS(2) OBJECT(.\Objects\ds1302.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          
+   3          sbit sclk = P3^6;
+   4          sbit io = P3^4;
+   5          sbit ce = P3^5;
+   6          
+   7          #define SEC    0x80
+   8          #define MIN    0x82
+   9          #define HOUR   0x84
+  10          #define DATE   0x86
+  11          #define MONTH  0x88
+  12          #define DAY    0x8A
+  13          #define YEAR   0x8C
+  14          #define WP     0x8E
+  15          
+  16          unsigned char ds_time[] = {24,12,31,23,59,55,2};
+  17          
+  18          void init(){
+  19   1        ce = 0;
+  20   1        sclk = 0;
+  21   1      }
+  22          //  write(0x80,0x03);
+  23          void write(command,DATA){
+  24   1        unsigned char i;
+  25   1        ce = 1;
+  26   1        for(i = 0;i<8;i++){
+  27   2          io = command&(0x01<<i);
+  28   2          sclk = 1;
+  29   2          sclk = 0;
+  30   2        }
+  31   1        for(i = 0;i<8;i++){
+  32   2          io = DATA&(0x01<<i);
+  33   2          sclk = 1;
+  34   2          sclk = 0;
+  35   2        }
+  36   1        ce = 0;
+  37   1        
+  38   1      }
+  39          
+  40          unsigned char read(command){
+  41   1        int i;
+  42   1        unsigned char DATA = 0x00;
+  43   1        command |= 0x01;
+  44   1        ce = 1;
+  45   1        for(i = 0;i<8;i++){
+  46   2          io = command&(0x01<<i);
+  47   2          sclk = 0;
+  48   2          sclk = 1;
+  49   2        }
+  50   1        for(i = 0;i<8;i++){
+  51   2          sclk = 1;
+  52   2          sclk = 0;
+  53   2          if(io) {DATA |= (0x01<<i);}
+  54   2        }
+C51 COMPILER V9.54   DS1302                                                                10/16/2024 11:18:17 PAGE 2   
+
+  55   1        ce = 0;
+  56   1        io = 0;
+  57   1        return DATA;
+  58   1      }
+  59          
+  60          void ds_setTime(void){
+  61   1        write(WP,0x00);
+  62   1        write(YEAR,ds_time[0]/10*16+ds_time[0]%10);
+  63   1        write(MONTH,ds_time[1]/10*16+ds_time[1]%10);
+  64   1        write(DATE,ds_time[2]/10*16+ds_time[2]%10);
+  65   1        write(HOUR,ds_time[3]/10*16+ds_time[3]%10);
+  66   1        write(MIN,ds_time[4]/10*16+ds_time[4]%10);
+  67   1        write(SEC,ds_time[5]/10*16+ds_time[5]%10);
+  68   1        write(DAY,ds_time[6]/10*16+ds_time[6]%10);
+  69   1      }
+  70          
+  71          void ds_readTime(void){
+  72   1        unsigned char tmp;
+  73   1        tmp = read(YEAR);
+  74   1        ds_time[0] = tmp/16*10 + tmp%16;
+  75   1        tmp = read(MONTH);
+  76   1        ds_time[1] = tmp/16*10 + tmp%16;
+  77   1        tmp = read(DATE);
+  78   1        ds_time[2] = tmp/16*10 + tmp%16;
+  79   1        tmp = read(HOUR);
+  80   1        ds_time[3] = tmp/16*10 + tmp%16;
+  81   1        tmp = read(MIN);
+  82   1        ds_time[4] = tmp/16*10 + tmp%16;
+  83   1        tmp = read(SEC);
+  84   1        ds_time[5] = tmp/16*10 + tmp%16;
+  85   1        tmp = read(DAY);
+  86   1        ds_time[6] = tmp/16*10 + tmp%16;
+  87   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    595    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

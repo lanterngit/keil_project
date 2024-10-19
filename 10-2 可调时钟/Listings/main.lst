@@ -1,0 +1,160 @@
+C51 COMPILER V9.54   MAIN                                                                  10/16/2024 11:18:16 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          #include "lcd1602.h"
+   3          #include "delay.h"
+   4          #include "ds1302.h"
+   5          #include "key.h"
+   6          #include "timer0.h"
+   7          
+   8          unsigned char keyNum,mode,timeSelect,timeFlash;
+   9          
+  10          void timeShow(){
+  11   1        ds_readTime();
+  12   1        LCD_ShowNum(1,1,ds_time[0],2);
+  13   1        LCD_ShowNum(1,4,ds_time[1],2);
+  14   1        LCD_ShowNum(1,7,ds_time[2],2);
+  15   1        LCD_ShowNum(2,1,ds_time[3],2);
+  16   1        LCD_ShowNum(2,4,ds_time[4],2);
+  17   1        LCD_ShowNum(2,7,ds_time[5],2);
+  18   1      }
+  19          
+  20          void timeSet(){
+  21   1        if(keyNum == 2){
+  22   2          timeSelect++;
+  23   2          timeSelect%=6;
+  24   2        }
+  25   1        if(keyNum == 3){
+  26   2          ds_time[timeSelect]++;
+  27   2          if(ds_time[0]>99){ds_time[0]=0;}//年越界判断
+  28   2          if(ds_time[1]>12){ds_time[1]=1;}//月越界判断
+  29   2          if( ds_time[1]==1 || ds_time[1]==3 || ds_time[1]==5 || ds_time[1]==7 || 
+  30   2            ds_time[1]==8 || ds_time[1]==10 || ds_time[1]==12)//日越界判断
+  31   2          {
+  32   3            if(ds_time[2]>31){ds_time[2]=1;}//大月
+  33   3          }
+  34   2          else if(ds_time[1]==4 || ds_time[1]==6 || ds_time[1]==9 || ds_time[1]==11)
+  35   2          {
+  36   3            if(ds_time[2]>30){ds_time[2]=1;}//小月
+  37   3          }
+  38   2          else if(ds_time[1]==2)
+  39   2          {
+  40   3            if(ds_time[0]%4==0)
+  41   3            {
+  42   4              if(ds_time[2]>29){ds_time[2]=1;}//闰年2月
+  43   4            }
+  44   3            else
+  45   3            {
+  46   4              if(ds_time[2]>28){ds_time[2]=1;}//平年2月
+  47   4            }
+  48   3          }
+  49   2          if(ds_time[3]>23){ds_time[3]=0;}//时越界判断
+  50   2          if(ds_time[4]>59){ds_time[4]=0;}//分越界判断
+  51   2          if(ds_time[5]>59){ds_time[5]=0;}//秒越界判断
+  52   2        }
+  53   1        if(keyNum == 4){
+  54   2          ds_time[timeSelect]--;
+C51 COMPILER V9.54   MAIN                                                                  10/16/2024 11:18:16 PAGE 2   
+
+  55   2          if(ds_time[0]<0){ds_time[0]=99;}//年越界判断
+  56   2          if(ds_time[1]<1){ds_time[1]=12;}//月越界判断
+  57   2          if( ds_time[1]==1 || ds_time[1]==3 || ds_time[1]==5 || ds_time[1]==7 || 
+  58   2            ds_time[1]==8 || ds_time[1]==10 || ds_time[1]==12)//日越界判断
+  59   2          {
+  60   3            if(ds_time[2]<1){ds_time[2]=31;}//大月
+  61   3            if(ds_time[2]>31){ds_time[2]=1;}
+  62   3          }
+  63   2          else if(ds_time[1]==4 || ds_time[1]==6 || ds_time[1]==9 || ds_time[1]==11)
+  64   2          {
+  65   3            if(ds_time[2]<1){ds_time[2]=30;}//小月
+  66   3            if(ds_time[2]>30){ds_time[2]=1;}
+  67   3          }
+  68   2          else if(ds_time[1]==2)
+  69   2          {
+  70   3            if(ds_time[0]%4==0)
+  71   3            {
+  72   4              if(ds_time[2]<1){ds_time[2]=29;}//闰年2月
+  73   4              if(ds_time[2]>29){ds_time[2]=1;}
+  74   4            }
+  75   3            else
+  76   3            {
+  77   4              if(ds_time[2]<1){ds_time[2]=28;}//平年2月
+  78   4              if(ds_time[2]>28){ds_time[2]=1;}
+  79   4            }
+  80   3          }
+  81   2          if(ds_time[3]<0){ds_time[3]=23;}//时越界判断
+  82   2          if(ds_time[4]<0){ds_time[4]=59;}//分越界判断
+  83   2          if(ds_time[5]<0){ds_time[5]=59;}//秒越界判断
+  84   2        }
+  85   1        if(timeSelect==0 && timeFlash==1){LCD_ShowString(1,1,"  ");}
+  86   1        else {LCD_ShowNum(1,1,ds_time[0],2);}
+  87   1        if(timeSelect==1 && timeFlash==1){LCD_ShowString(1,4,"  ");}
+  88   1        else {LCD_ShowNum(1,4,ds_time[1],2);}
+  89   1        if(timeSelect==2 && timeFlash==1){LCD_ShowString(1,7,"  ");}
+  90   1        else {LCD_ShowNum(1,7,ds_time[2],2);}
+  91   1        if(timeSelect==3 && timeFlash==1){LCD_ShowString(2,1,"  ");}
+  92   1        else {LCD_ShowNum(2,1,ds_time[3],2);}
+  93   1        if(timeSelect==4 && timeFlash==1){LCD_ShowString(2,4,"  ");}
+  94   1        else {LCD_ShowNum(2,4,ds_time[4],2);}
+  95   1        if(timeSelect==5 && timeFlash==1){LCD_ShowString(2,7,"  ");}
+  96   1        else {LCD_ShowNum(2,7,ds_time[5],2);}
+  97   1      }
+  98          
+  99          void main()
+ 100          {
+ 101   1        LCD_Init();
+ 102   1        init();
+ 103   1        Timer0_Init();
+*** WARNING C206 IN LINE 103 OF main.c: 'Timer0_Init': missing function-prototype
+ 104   1        ds_setTime();
+ 105   1        LCD_ShowString(1,1,"  -  -  ");
+ 106   1        LCD_ShowString(2,1,"  :  :  ");
+ 107   1        while(1)
+ 108   1        {
+ 109   2          keyNum = key();
+ 110   2          if(keyNum == 1){
+ 111   3            if(mode == 0) mode = 1;
+ 112   3            else if(mode == 1) mode = 0;
+ 113   3          }
+ 114   2          switch(mode){
+ 115   3            case 0: timeShow();break;
+C51 COMPILER V9.54   MAIN                                                                  10/16/2024 11:18:16 PAGE 3   
+
+ 116   3            case 1: timeSet();break;
+ 117   3          }
+ 118   2        }
+ 119   1      }
+ 120          
+ 121          void timer0_routine() interrupt 1{
+ 122   1        static unsigned int T0Count;
+ 123   1        TL0 = 0x18;
+ 124   1        TH0 = 0xFC;
+ 125   1        T0Count++;
+ 126   1        if(T0Count>=500){
+ 127   2          T0Count = 0;
+ 128   2          timeFlash != timeFlash;
+*** WARNING C275 IN LINE 128 OF main.c: expression with possibly no effect
+ 129   2        }
+ 130   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    863    ----
+   CONSTANT SIZE    =     21    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

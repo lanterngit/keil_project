@@ -1,0 +1,65 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/17/2024 17:21:59 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          #include <intrins.h>
+   3          
+   4          void Delay1ms()   //@11.0592MHz
+   5          {
+   6   1        unsigned char i, j;
+   7   1      
+   8   1        _nop_();
+   9   1        i = 2;
+  10   1        j = 199;
+  11   1        do
+  12   1        {
+  13   2          while (--j);
+  14   2        } while (--i);
+  15   1      }
+  16          
+  17          void DelayAnyms(int time){
+  18   1        int i;
+  19   1        for(i = 0;i<time;i++ ){
+  20   2          Delay1ms();
+  21   2        }
+  22   1      }
+  23          void main(){
+  24   1        int time = 100;
+  25   1        P2 = 0xFE;
+  26   1        DelayAnyms(time);
+  27   1        P2 = 0xFD;
+  28   1        DelayAnyms(time);
+  29   1        P2 = 0xFB;
+  30   1        DelayAnyms(time);
+  31   1        P2 = 0xF7;
+  32   1        DelayAnyms(time);
+  33   1        P2 = 0xEF;
+  34   1        DelayAnyms(time);
+  35   1        P2 = 0xDF;
+  36   1        DelayAnyms(time);
+  37   1        P2 = 0xBF;
+  38   1        DelayAnyms(time);
+  39   1        P2 = 0x7F;
+  40   1        DelayAnyms(time);
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    100    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,64 @@
+C51 COMPILER V9.54   MAIN                                                                  10/20/2024 00:36:35 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          #include "lcd1602.h"
+   3          #include "delay.h"
+   4          #include "key.h"
+   5          #include "24C02.h"
+   6          
+   7          unsigned char keyNum;
+   8          unsigned int num;
+   9          
+  10          void main()
+  11          {
+  12   1        unsigned char byte;
+  13   1        LCD_Init();
+  14   1        LCD_ShowNum(1,1,num,5);
+  15   1        while(1){
+  16   2          keyNum = key();
+  17   2          switch(keyNum){
+  18   3            case 1:
+  19   3              num++;
+  20   3              LCD_ShowNum(1,1,num,5);
+  21   3              break;
+  22   3            case 2:
+  23   3              num--;
+  24   3              LCD_ShowNum(1,1,num,5);
+  25   3              break;
+  26   3            case 3:
+  27   3              writeByte(0,num%256);
+  28   3              delay(5);
+  29   3              writeByte(1,num/256);
+  30   3              delay(5);
+  31   3              break;
+  32   3            case 4:
+  33   3              num = readByte(0);
+  34   3              num |= readByte(1)<<8; 
+  35   3              LCD_ShowNum(1,1,num,5);
+  36   3              break;
+  37   3          }
+  38   2        }
+  39   1      }
+*** WARNING C280 IN LINE 12 OF main.c: 'byte': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    142    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

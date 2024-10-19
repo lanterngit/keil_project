@@ -1,0 +1,84 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/18/2024 11:07:54 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <regx52.h>
+   2          #include <intrins.h>
+   3          
+   4          unsigned char table[] = 
+   5          {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,0x77,0x7C,0x39,0x5E,0x79,0x71,0x00};
+   6          void delay(time)    //@11.0592MHz
+   7          {
+   8   1        int a;
+   9   1        for(a = 0;a<time;a++)
+  10   1        {
+  11   2          unsigned char i, j;
+  12   2      //    i = 2;
+  13   2      //    j = 199;
+  14   2      //    do
+  15   2      //    {
+  16   2      //      while (--j);
+  17   2      //    } while (--i);
+  18   2          i = 43;
+  19   2          while (--i);
+  20   2        }
+  21   1      }
+*** WARNING C280 IN LINE 11 OF main.c: 'j': unreferenced local variable
+  22          
+  23          void display(unsigned char address,num)
+  24          {
+  25   1        switch(address)
+  26   1        {
+  27   2          case 1: P2_4 = 1; P2_3 = 1; P2_2 = 1;break;
+  28   2          case 2: P2_4 = 1; P2_3 = 1; P2_2 = 0;break;
+  29   2          case 3: P2_4 = 1; P2_3 = 0; P2_2 = 1;break;
+  30   2          case 4: P2_4 = 1; P2_3 = 0; P2_2 = 0;break;
+  31   2          case 5: P2_4 = 0; P2_3 = 1; P2_2 = 1;break;
+  32   2          case 6: P2_4 = 0; P2_3 = 1; P2_2 = 0;break;
+  33   2          case 7: P2_4 = 0; P2_3 = 0; P2_2 = 1;break;
+  34   2          case 8: P2_4 = 0; P2_3 = 0; P2_2 = 0;break;
+  35   2        }
+  36   1        P0 = table[num];
+  37   1      }
+  38          void main()
+  39          {
+  40   1        int time = 1;
+  41   1        display(1,1);
+  42   1        delay(time);
+  43   1        display(2,2);
+  44   1        delay(time);
+  45   1        display(3,3);
+  46   1        delay(time);
+  47   1        display(4,4);
+  48   1        delay(time);
+  49   1        display(5,5);
+  50   1        delay(time);
+  51   1        display(6,6);
+  52   1        delay(time);
+  53   1        display(7,7);
+C51 COMPILER V9.60.7.0   MAIN                                                              09/18/2024 11:07:54 PAGE 2   
+
+  54   1        delay(time);
+  55   1        display(8,8);
+  56   1        delay(time);
+  57   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    221    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     17       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

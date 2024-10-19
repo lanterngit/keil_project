@@ -1,0 +1,3 @@
+"mian.obj" 
+TO "project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 

@@ -1,0 +1,46 @@
+C51 COMPILER V9.60.7.0   MIAN                                                              09/17/2024 23:14:06 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MIAN
+OBJECT MODULE PLACED IN mian.OBJ
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE mian.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND PRINT(.\Listings\mian.lst) T
+                    -ABS(2)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <INTRINS.H>
+   3          void Delay10ms()    //@11.0592MHz
+   4          {
+   5   1        unsigned char i, j;
+   6   1      
+   7   1        i = 18;
+   8   1        j = 235;
+   9   1        do
+  10   1        {
+  11   2          while (--j);
+  12   2        } while (--i);
+  13   1      }
+  14          
+  15          
+  16          
+  17          void main(){
+  18   1        P2 = 0x55;
+  19   1        Delay10ms();
+  20   1        P2 = 0xAA;
+  21   1        Delay10ms();
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     21    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
